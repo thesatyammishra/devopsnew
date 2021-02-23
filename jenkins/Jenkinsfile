@@ -1,16 +1,17 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
-    }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
+    agent any
+	    tools {
+	        maven 'maven'   
+	        }
+	    stages {
+	        stage ('Git Checkout') {
+	            steps {
+	                git branch: 'main',
+			credentialsId: '6cd486ea-6893-4acf-a418-d5dceef2be8f',
+			url: 'https://github.com/thesatyammishra/ctcode.git'
+	                
+	                }
+	            } 
         stage('Test') {
             steps {
                 sh 'mvn test'
